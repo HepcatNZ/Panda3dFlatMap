@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<map name="Wellington Wars" region_map="maps/wellington/wellington_regions.png" texture_map="maps/wellington/wellington_texture.jpg">
+	<date>
+		<day>8</day>
+		<month>3</month>
+		<year>2063</year>
+	</date>
+	<province id="1">
+		<name>Wellington</name>
+		<rgb>217 144 22</rgb>
+		<x>594</x>
+		<y>378</y>
+	</province>
+	<province id="2">
+		<name>Kilbirnie</name>
+		<rgb>80 186 108</rgb>
+		<x>615</x>
+		<y>434</y>
+	</province>
+	<province id="3">
+		<name>Airport</name>
+		<rgb>0 113 156</rgb>
+		<x>620</x>
+		<y>499</y>
+	</province>
+	<province id="4">
+		<name>Miramar</name>
+		<rgb>192 190 0</rgb>
+		<x>664</x>
+		<y>400</y>
+	</province>
+	<province id="5">
+		<name>The Hutt</name>
+		<rgb>68 16 123</rgb>
+		<x>881</x>
+		<y>100</y>
+	</province>
+</map>

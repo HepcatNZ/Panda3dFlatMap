@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<map name="Worldly Worries" region_map="maps/earth/earth_regions.png" texture_map="maps/earth/earth_texture.jpg">
+	<date>
+		<day>6</day>
+		<month>3</month>
+		<year>2052</year>
+	</date>
+	<province id="1">
+		<name>Isles of Scilly</name>
+		<image>textures/provinces/scilly.jpg</image>
+		<rgb>36 179 138</rgb>
+		<x>2605</x>
+		<y>600</y>
+	</province>
+	<province id="2">
+		<name>Scotland</name>
+		<rgb>147 205 105</rgb>
+		<x>2646</x>
+		<y>511</y>
+	</province>
+	<province id="3">
+		<name>Brittany</name>
+		<image>textures/provinces/brittany.jpg</image>
+		<rgb>0 136 52</rgb>
+		<x>2670</x>
+		<y>630</y>
+	</province>
+	<province id="4">
+		<name>Normandy</name>
+		<image>textures/provinces/normandy.jpg</image>
+		<rgb>245 192 47</rgb>
+		<x>2689</x>
+		<y>614</y>
+	</province>
+	<province id="5">
+		<name>England</name>
+		<image>textures/provinces/london.jpg</image>
+		<rgb>185 83 34</rgb>
+		<x>2708</x>
+		<y>576</y>
+	</province>
+	<province id="6">
+		<name>Taranaki</name>
+		<image>textures/provinces/taranaki.jpg</image>
+		<rgb>235 100 103</rgb>
+		<x>5309</x>
+		<y>1939</y>
+	</province>
+	<province id="7">
+		<name>Northland</name>
+		<image>textures/provinces/northland.jpg</image>
+		<rgb>254 245 127</rgb>
+		<x>5310</x>
+		<y>1886</y>
+	</province>
+	<province id="8">
+		<name>Wellington</name>
+		<image>textures/provinces/wellington.jpg</image>
+		<rgb>99 192 167</rgb>
+		<x>5325</x>
+		<y>1967</y>
+	</province>
+	<province id="9">
+		<name>Waikato</name>
+		<rgb>175 159 201</rgb>
+		<x>5327</x>
+		<y>1913</y>
+	</province>
+	<province id="10">
+		<name>Coramandel</name>
+		<rgb>122 49 136</rgb>
+		<x>5335</x>
+		<y>1908</y>
+	</province>
+	<province id="11">
+		<name>Bay of Plenty</name>
+		<image>textures/provinces/rotorua.jpg</image>
+		<rgb>129 13 68</rgb>
+		<x>5347</x>
+		<y>1923</y>
+	</province>
+	<province id="12">
+		<name>Italy and then some</name>
+		<image>textures/provinces/rome.jpg</image>
+		<rgb>170 131 20</rgb>
+		<x>2896</x>
+		<y>726</y>
+	</province>
+</map>
