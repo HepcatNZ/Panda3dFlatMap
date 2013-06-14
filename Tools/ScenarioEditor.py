@@ -67,8 +67,6 @@ class MapEditor:
         self.txt_nation_name = builder.get_object("txt_nation_name")
         self.btn_nation_create = builder.get_object("btn_nation_new")
         self.btn_nation_create.connect("clicked", self.nation_create)
-        self.btn_nation_delete = builder.get_object("btn_nation_delete")
-        self.btn_nation_delete.connect("clicked", self.nation_delete)
         self.adj_nation_coin = builder.get_object("adj_nation_coin")
         self.adj_nation_men = builder.get_object("adj_nation_manpower")
 
