@@ -162,7 +162,6 @@ class MapEditor:
             self.selected_prov = prov_id
             self.txt_prov_name.set_text(self.provs[prov_id])
 
-
     def mouse_motion(self,window,event):
         if self.cmbo_maps.get_active() != 0:
             self.mouse_x = event.x+self.win_map_scroll.get_hadjustment().get_value()
