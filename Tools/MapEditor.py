@@ -202,6 +202,7 @@ class MapEditor:
             prov.append(add_element("rgb",self.provs_rgb[p]))
             prov.append(add_element("x",self.provs_x[p]))
             prov.append(add_element("y",self.provs_y[p]))
+
             root.append(prov)
 
         dir = os.path.dirname(os.path.realpath(__file__))

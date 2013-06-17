@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<scenario name="Wellington Wars" region_map="maps/wellington/wellington_regions.png" texture_map="maps/wellington/wellington_texture.jpg">
+	<date>
+		<day>8</day>
+		<month>3</month>
+		<year>2063</year>
+	</date>
+	<nation id="1">
+		<name>Wellington Union</name>
+		<rgb>255 0 0</rgb>
+		<capital>1</capital>
+		<coin>115</coin>
+		<men>40</men>
+	</nation>
+	<nation id="2">
+		<name>Miramar Confederation</name>
+		<rgb>0 255 0</rgb>
+		<capital>4</capital>
+		<coin>65</coin>
+		<men>75</men>
+	</nation>
+	<nation id="3">
+		<name>Hutt State</name>
+		<rgb>0 0 255</rgb>
+		<capital>5</capital>
+		<coin>80</coin>
+		<men>85</men>
+	</nation>
+	<province id="1" owner="1">
+		<name>Wellington</name>
+		<rgb>217 144 22</rgb>
+		<x>594</x>
+		<y>378</y>
+		<coin>8.0</coin>
+		<men>1.6</men>
+	</province>
+	<province id="2" owner="2">
+		<name>Kilbirnie</name>
+		<rgb>80 186 108</rgb>
+		<x>615</x>
+		<y>434</y>
+		<coin>0.8</coin>
+		<men>2.2</men>
+	</province>
+	<province id="3" owner="2">
+		<name>Airport</name>
+		<rgb>0 113 156</rgb>
+		<x>620</x>
+		<y>499</y>
+		<coin>3.0</coin>
+		<men>0.2</men>
+	</province>
+	<province id="4" owner="2">
+		<name>Miramar</name>
+		<rgb>192 190 0</rgb>
+		<x>664</x>
+		<y>400</y>
+		<coin>1.6</coin>
+		<men>3.0</men>
+	</province>
+	<province id="5" owner="3">
+		<name>The Hutt</name>
+		<rgb>68 16 123</rgb>
+		<x>881</x>
+		<y>100</y>
+		<coin>2.6</coin>
+		<men>5.5</men>
+	</province>
+	<army id="1">
+		<name>Hutt Army</name>
+		<home>5</home>
+		<location>5</location>
+		<infantry>16</infantry>
+		<archers>0</archers>
+		<cavalry>0</cavalry>
+	</army>
+	<army id="2">
+		<name>Wellington Army</name>
+		<home>1</home>
+		<location>1</location>
+		<infantry>18</infantry>
+		<archers>14</archers>
+		<cavalry>12</cavalry>
+	</army>
+	<army id="3">
+		<name>Miramar Army</name>
+		<home>4</home>
+		<location>4</location>
+		<infantry>10</infantry>
+		<archers>8</archers>
+		<cavalry>6</cavalry>
+	</army>
+	<paths>
+		<path name="1-2"/>
+		<path name="2-3"/>
+		<path name="3-4"/>
+		<path name="2-4"/>
+		<path name="1-5"/>
+	</paths>
+</scenario>

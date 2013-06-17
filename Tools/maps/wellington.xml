@@ -35,4 +35,11 @@
 		<x>881</x>
 		<y>100</y>
 	</province>
+	<paths>
+		<path name="1-2"/>
+		<path name="2-3"/>
+		<path name="3-4"/>
+		<path name="2-4"/>
+		<path name="1-5"/>
+	</paths>
 </map>

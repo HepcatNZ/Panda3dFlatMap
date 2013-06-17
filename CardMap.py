@@ -15,6 +15,7 @@ import Image
 
 import sys
 import math
+import string
 
 #import direct.directbase.DirectStart
 from pandac.PandaModules import GeomVertexFormat, GeomVertexData, GeomVertexWriter, GeomTriangles, Geom, GeomNode, NodePath, GeomPoints
@@ -42,7 +43,7 @@ class StrategyGame(ShowBase):
         self.pickingEnabledObject = None
         self.prov_selected = -1
 
-        self.map = "maps/earth/earth.xml"
+        self.scenario = "scenarios/wellington/wellington_wars.xml"
         loading_screen = "textures/loading.jpg"
         self.load_image = OnscreenImage(image = loading_screen, scale = (1920.0/1080.0,1,1))
         self.load_text = OnscreenText(text="Initialising...", pos = (0,-0.45,0))
@@ -50,7 +51,7 @@ class StrategyGame(ShowBase):
         #self.load_state = "Done!"
 
         taskMgr.add(self.task_loading,"LoadingTask")
-        taskMgr.doMethodLater(1.0,self.xml_map_load,"xmlload")
+        taskMgr.doMethodLater(1.0,self.xml_scen_load,"xmlload")
 
         self.cam = TimCam()
 
@@ -114,8 +115,8 @@ class StrategyGame(ShowBase):
         if self.pickingEnabledObject:
             if status == "down":
                 self.pickingEnabledObject.setScale(0.95*2)
-                self.prov_selected = int(self.pickingEnabledObject.getTag("id"))-1
-                self.message_create("You clicked on "+self.provs[int(self.pickingEnabledObject.getTag("id"))-1])
+                self.prov_selected = int(self.pickingEnabledObject.getTag("id"))
+                self.message_create("You clicked on "+self.provinces[int(self.pickingEnabledObject.getTag("id"))][0])
                 self.interface_update()
 
             if status == "up":
@@ -135,9 +136,9 @@ class StrategyGame(ShowBase):
         if self.prov_selected != -1:
             texture = loader.loadTexture("textures/interface_prov.png")
             self.interface_card.setTexture(texture)
-            self.lbl_prov_name.setText(self.provs[self.prov_selected])
-            if self.provs_img[self.prov_selected] != None:
-                self.inter_img.setTexture(self.provs_img[self.prov_selected])
+            self.lbl_prov_name.setText(self.provinces[self.prov_selected][0])
+            if self.provinces[self.prov_selected][4] != None:
+                self.inter_img.setTexture(self.provinces[self.prov_selected][4])
             else:
                 texture = loader.loadTexture("textures/planet.jpg")
                 self.inter_img.setTexture(texture)
@@ -188,8 +189,8 @@ class StrategyGame(ShowBase):
         if self.load_state == "Done!":
             self.interface_draw()
             self.message_list = []
-            for p in range(len(self.provs)):
-                self.message_list.append(self.provs[p]+" has been invaded by the enemy!")
+            for p in range(len(self.provinces)):
+                self.message_list.append(self.provinces[p+1][0]+" has been invaded by the enemy!")
             for m in range(len(self.message_list)):
                 self.message_create(self.message_list[m])
             self.load_image.destroy()
@@ -211,12 +212,12 @@ class StrategyGame(ShowBase):
         return task.again
 
 
+
     def draw_card(self,renderer,pLL,pLR,pUR,pUL):
         cm = CardMaker("CardMaker")
         cm.setFrame(pLL,pLR,pUR,pUL)
         card = renderer.attachNewNode(cm.generate())
         card.clearColor()
-
         return (card)
 
     def draw_card_pixel(self,tex,x,y,width,height):
@@ -233,6 +234,7 @@ class StrategyGame(ShowBase):
     def map_create(self,task):
         im = Image.open(self.map_region)
         pix = im.load()
+        print im.getcolors()
         width,height = im.size
         aspect = width/height
         print width,height,aspect
@@ -251,7 +253,17 @@ class StrategyGame(ShowBase):
         reg.setHpr(180,0,0)
         reg.setTransparency(TransparencyAttrib.MAlpha)
 
-        tex_reg = loader.loadTexture(self.map_region)
+        size = width,height
+        self.nat_map = Image.new("RGBA",size,(255,255,255,0))
+        self.nat_map_pix = self.nat_map.load()
+        #for x in range(width):
+        #    for y in range(height):
+        #        if pix[x,y][3] != 0 and pix[x,y] != (0,0,0,255):
+        #            prov_from_col = self.get_prov_from_col(pix[x,y])
+        #            self.nat_map_pix[x,y] = self.get_col_from_rgb(self.nations[self.provinces[prov_from_col][7]][1])
+        self.nat_map.save("nat_map.png","PNG")
+
+        tex_reg = loader.loadTexture("nat_map.png")
         reg.setTexture(tex_reg)
         reg.setAlphaScale(0.3)
 
@@ -263,26 +275,63 @@ class StrategyGame(ShowBase):
 
         return task.done
 
+    def get_col_from_rgb(self,rgb):
+        col = string.split(rgb)
+        return (int(col[0]),int(col[1]),int(col[2]),255)
+
+    def get_prov_from_col(self,colour):
+        found = False
+        for p in range(len(self.provinces)):
+            if self.get_col_from_rgb(self.provinces[p+1][1]) == colour:
+                found = True
+                return p+1
+        if found == False:
+            print "##ERROR FINDING PROV FROM COL "+str(colour)+"##"
+
     def map_populate(self,task):
         self.init_collisions()
-
-        for p in range(len(self.provs)):
+        for p in range(len(self.provinces)):
             city = loader.loadModel("models/house2.x")
             city.reparentTo(render)
-            city.setName(self.provs[p])
+            city.setName(self.provinces[p+1][0])
             city.setScale(2, 2, 2)
-            x = float(self.provs_x[p]*self.map_scale)-(self.map_width/2)
-            y = self.map_height-float(self.provs_y[p]*self.map_scale)-(self.map_height/2)
+            x = float(self.provinces[p+1][2]*self.map_scale)-(self.map_width/2)
+            y = self.map_height-float(self.provinces[p+1][3]*self.map_scale)-(self.map_height/2)
             city.setPos(x, y, 1.0)
             city_col = city.attachNewNode(CollisionNode("CityCNode%d"%p))
             city_col.setScale((3,3,3))
             city_col.node().addSolid(CollisionSphere(0,0,0,1))
             city_col.setTag("prov","city")
             city.setTag("id",str(p+1))
+        for p in range(len(self.paths)):
+            path_split = string.replace(self.paths[p],"-"," ")
+            path_split = string.split(path_split)
+            prov_a = int(path_split[0])
+            prov_b = int(path_split[1])
+            line = LineSegs()
+            line.setColor(1, 0, 0, 1)
+            line.setThickness(5)
+            line.moveTo(self.provinces[prov_a][2]-600, -(self.provinces[prov_a][3])+350, 2)
+            line.drawTo(self.provinces[prov_b][2]-600, -(self.provinces[prov_b][3])+350, 2)
+
+            node = line.create()
+            node_path = NodePath(node)
+            node_path.reparentTo(render)
+            print "line drawn",self.provinces[prov_a][2],self.provinces[prov_a][3]
+        for a in range(len(self.armies)):
+            self.army_create(a+1,self.armies[a+1][2])
 
         self.load_state = "Done!"
         task.done
 
+    def army_create(self,army_id,location):
+        #self.provinces[location][8].append(army_id)
+        x = float(self.provinces[location][2]*self.map_scale)-(self.map_width/2)
+        y = self.map_height-float(self.provinces[location][3]*self.map_scale)-(self.map_height/2)
+        army = loader.loadModel("models/man.x")
+        army.reparentTo(render)
+        army.setName(self.armies[army_id][0])
+        army.setPos(x, y, 1.0)
 
     def message_create(self,text):
         msg_height = 17
@@ -306,8 +355,8 @@ class StrategyGame(ShowBase):
         para = Sequence(Wait(self.msg_delay), fadeOut)
         para.start()
 
-    def xml_map_load(self,task):
-        tree = xml.parse(self.map)
+    def xml_scen_load(self,task):
+        tree = xml.parse(self.scenario)
         root = tree.getroot()
 
         self.map_region = root.attrib["region_map"]
@@ -317,22 +366,36 @@ class StrategyGame(ShowBase):
         self.month = (int(root.find("date/month").text))
         self.year = (int(root.find("date/year").text))
 
-        self.provs = []
-        self.provs_x = []
-        self.provs_y = []
-        self.provs_rgb = []
-        self.provs_img = []
+        self.provinces = {}
+        self.nations = {}
+        self.armies = {}
+        self.paths = []
         for p in root.findall("province"):
-            self.provs.append(p.find("name").text)
-            self.provs_rgb.append(p.find("rgb").text)
-            self.provs_x.append(int(p.find("x").text))
-            self.provs_y.append(int(p.find("y").text))
             if (p.find("image") != None):
-                self.provs_img.append(loader.loadTexture(p.find("image").text))
+                self.provinces[int(p.attrib["id"])] = [p.find("name").text,p.find("rgb").text,int(p.find("x").text),int(p.find("y").text),
+                                                       loader.loadTexture(p.find("image").text),float(p.find("coin").text),float(p.find("men").text),int(p.attrib["owner"]),[]]
             else:
-                self.provs_img.append(None)
+                self.provinces[int(p.attrib["id"])] = [p.find("name").text,p.find("rgb").text,int(p.find("x").text),int(p.find("y").text),
+                                                       None,float(p.find("coin").text),float(p.find("men").text),int(p.attrib["owner"]),[]]
+        print self.provinces
 
-        print self.provs_img
+        for n in root.findall("nation"):
+            if (n.find("flag") != None):
+                self.nations[int(n.attrib["id"])] = [n.find("name").text,n.find("rgb").text,int(n.find("capital").text),int(n.find("coin").text),int(n.find("men").text),[],
+                                                       loader.loadTexture(n.find("flag").text)]
+            else:
+                self.nations[int(n.attrib["id"])] = [n.find("name").text,n.find("rgb").text,int(n.find("capital").text),int(n.find("coin").text),int(n.find("men").text),[],
+                                                       None]
+        print self.nations
+
+        for a in root.findall("army"):            #0:Name 1:Home 2:Location 3:Inf 4:Arch 5:Cav 6:x 7:y
+            self.armies[int(a.attrib["id"])] = [a.find("name").text,int(a.find("home").text),int(a.find("location").text),
+                                                int(a.find("infantry").text),int(a.find("archers").text),int(a.find("cavalry").text),"node"]
+        print self.armies
+
+        for pth in root.findall("paths/path"):
+            self.paths.append(pth.attrib["name"])
+        print self.paths
 
         im = Image.open(self.map_region)
         self.region_pix = im.load()
